@@ -1,0 +1,93 @@
+import sys
+
+def parse_line(line):
+    if '->' in line:
+        left, right = line.split('->', 1)
+    elif '→' in line:
+        left, right = line.split('→', 1)
+    else:
+        raise ValueError("Rule must contain '->' or '→': " + line)
+    left = left.strip()
+    rhss = [alt.strip().replace(" ", "") for alt in right.split('|')]
+    rhss = [('ε' if r in ('e','eps','ε','') else r) for r in rhss]
+    return left, rhss
+
+def eliminate_left_recursion(order, prods):
+    i = 0
+    while i < len(order):
+        Ai = order[i]
+
+        
+        for j in range(i):
+            Aj = order[j]
+            new_rhs = []
+            for rhs in prods[Ai]:
+                if rhs.startswith(Aj):
+                    alpha = rhs[len(Aj):]
+                    for beta in prods[Aj]:
+                        if beta == 'ε':
+                            new_rhs.append(alpha if alpha else 'ε')
+                        else:
+                            new_rhs.append(beta + alpha)
+                else:
+                    new_rhs.append(rhs)
+            prods[Ai] = new_rhs
+
+        
+        recursive, nonrecursive = [], []
+        for rhs in prods[Ai]:
+            if rhs.startswith(Ai):   # left recursive
+                recursive.append(rhs[len(Ai):] or 'ε')
+            else:
+                nonrecursive.append(rhs)
+
+        if recursive:
+            Ai_prime = Ai + "'"
+
+            prods[Ai] = [alpha + Ai_prime for alpha in recursive]
+            prods[Ai_prime] = [beta + Ai_prime for beta in nonrecursive] + ['ε']
+
+            order.insert(i, Ai_prime)
+            i += 1  
+
+        i += 1
+    return order, prods
+
+def pretty_print(order, prods):
+    for A in order:
+        if A in prods:
+            rhss = prods[A]
+            print(f"{A} -> " + " | ".join(rhss))
+
+def main():
+    print("Enter grammar rules (one per line). Use '->' or '→'. Press Enter on empty line to finish.")
+    order = []
+    prods = {}
+
+    while True:
+        try:
+            line = input().strip()
+        except EOFError:
+            break
+        if line == "":
+            break
+        left, rhss = parse_line(line)
+        if left not in prods:
+            order.append(left)
+            prods[left] = []
+        prods[left].extend(rhss)
+
+    if not order:
+        print("No rules provided. Exiting.")
+        return
+
+    print("\nOriginal grammar:")
+    pretty_print(order, prods)
+
+    new_order, new_prods = eliminate_left_recursion(order[:], {k: v[:] for k, v in prods.items()})
+
+    print("\nGrammar after left recursion elimination:")
+    pretty_print(new_order, new_prods)
+
+if __name__ == "__main__":
+    main()
