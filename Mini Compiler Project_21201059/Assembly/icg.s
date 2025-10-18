@@ -1,0 +1,61 @@
+.text
+MOV R0, =i
+MOV R1, [R0]
+MOV R2, #0
+STR R2, [R0]
+L0:
+MOV R3, =i
+MOV R4, [R3]
+MOV R5, =t0
+MOV R6, [R5]
+NOP R6, #4, R10
+STR R6, [R5]
+MOV R7, =i
+MOV R8, [R7]
+CMP R8, #10
+BGE L1
+MOV R9, =a
+MOV R10, [R9]
+MOV R11, =i
+MOV R12, [R11]
+MOV R0, =t1
+MOV R1, [R0]
+ADD R1, R10, R12
+STR R1, [R0]
+MOV R2, =a
+MOV R3, [R2]
+MOV R4, #t1
+STR R4, [R2]
+MOV R5, =i
+MOV R6, [R5]
+MOV R7, =t2
+MOV R8, [R7]
+ADD R8, #6, R1
+STR R8, [R7]
+MOV R9, =i
+MOV R10, [R9]
+MOV R11, #t2
+STR R11, [R9]
+B L0
+L1:
+MOV R12, =a
+MOV R0, [R12]
+MOV R1, =t3
+MOV R2, [R1]
+MUL R2, #2, R0
+STR R2, [R1]
+MOV R3, =t3
+MOV R4, [R3]
+MOV R5, =t4
+MOV R6, [R5]
+SUBS R6, #4, R1
+STR R6, [R5]
+MOV R7, =a
+MOV R8, [R7]
+MOV R9, #t4
+STR R9, [R7]
+SWI 0x011
+
+.DATA
+i: .WORD 0
+a: .WORD 0

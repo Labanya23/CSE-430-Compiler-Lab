@@ -1,0 +1,19 @@
+int main() {
+    int a_val, b_val;
+    a_val = 77;
+    b_val = 33;
+    
+    int sum1 = a_val + b_val + 11;
+    int counter1 = 5;  // example initial value
+    int counter = counter1;
+
+    while(counter1) {
+        counter--;
+    }
+
+    if(counter == 0) {
+        counter = counter + 2;
+    } else {
+        counter = 0;
+    }
+}

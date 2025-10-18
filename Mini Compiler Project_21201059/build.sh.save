@@ -1,0 +1,58 @@
+chmod +x build.sh
+./build.sh
+..................
+cd "Lexical"
+flex token.l 
+gcc lex.yy.c -o a.out
+./a.out < input0.txt
+
+........
+cd “../symboltable”
+
+flex symbol.l
+
+gcc lex.yy.c – o a.out
+
+./a.out input0.txt
+
+----------
+cd “../syntax analyziz”
+
+bison –d lexical.y
+
+flex lexical.l
+
+gcc lex.yy.c lexical.tab.c – o a.out
+
+./a.out < input1.txt
+
+---------------------
+cd “../parser tree”
+
+bison –d tree.y
+
+flex tree.l
+
+gcc lex.yy.c tree.tab.c – o treee
+
+./treee < input.cpp
+---------------------------
+cd “../intermediate code generator”
+
+bison –d icg.y
+
+flex icg.l
+
+gcc lex.yy.c icg.tab.c – o a.out
+
+./a.out < input0.cpp
+---------------------------------
+cd “../IC_CODE OPTIMIZATION”
+python3 optimizer.py icg.txt --print
+python3 optimizer.py input.txt --print
+
+----------------------------
+cd “../ Assembly”
+python3 assembly.py icg.txt
+python3 assembly.py input.txt
+
