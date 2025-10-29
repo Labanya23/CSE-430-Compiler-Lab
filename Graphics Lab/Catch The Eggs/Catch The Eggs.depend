@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1760981684 source:e:\opengl\catch the eggs\main.c
+	<GL/glut.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	<math.h>
+	<windows.h>
+	<mmsystem.h>
+	<tchar.h>
+

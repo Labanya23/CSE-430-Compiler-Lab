@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1757768128 source:e:\opengl\2d car\main.c
+	<GL/glut.h>
+	<math.h>
+	<stdbool.h>
+
